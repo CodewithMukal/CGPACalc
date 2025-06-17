@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Frijole&display=swap');
+@font-face {
+  font-family: 'Hermeneus One';
+  src: url(./assets/HermeneusOne.ttf) format('truetype');
+}
+.fontHerm
+{
+  font-family:"Hermeneus One";
+}
+@import 'tailwindcss';
