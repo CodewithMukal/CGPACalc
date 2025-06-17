@@ -6,7 +6,7 @@ import { Grades } from "./components/Grades";
 function App() {
   const [mode, setMode] = useState("");
   const [subject, setSubject] = useState(0);
-
+  const [cg,setCG] = useState(null);
   let [gradeVals, setGrades] = useState(Array(subject).fill(0));
   let [subjectNames, setSubjectNames] = useState(Array(subject).fill(""));
   let [creditValues, setCredits] = useState(Array(subject).fill(0));
@@ -23,9 +23,16 @@ function App() {
   };
   const handleCalculate = ()=>{
     let totalCredits = 0;
+    let obtainedCredits = 0;
     for(let i of creditValues){
       totalCredits+=Number(i);
     }
+    for(let i in creditValues){
+      obtainedCredits += creditValues[i]*gradeVals[i];
+    }
+    let cgpa = obtainedCredits/totalCredits
+    let rounded = cgpa.toFixed(2);
+    setCG(rounded)
     console.log(totalCredits)
     console.log(subjectNames,gradeVals,creditValues)
   }
@@ -99,6 +106,10 @@ function App() {
             Calculate
           </button>
         </div>}
+        {cg && 
+        <p className="text-white font-bold text-2xl justify-center items-center text-center my-[30px]">
+          Your CGPA is : {cg}
+        </p>}
       </div>
     </>
   );
