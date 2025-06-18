@@ -143,7 +143,7 @@ function App() {
             </button>
           </div>
         )}
-        {cg<=10 && (
+        {cg && cg<=10 && (
           <p className="text-white font-bold text-2xl justify-center items-center text-center my-[30px]">
             Your CGPA is : {cg}
           </p>
