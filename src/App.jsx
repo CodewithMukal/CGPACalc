@@ -6,9 +6,10 @@ import { Grades } from "./components/Grades";
 function App() {
   const [mode, setMode] = useState("");
   const [subject, setSubject] = useState(0);
-  const [seeSubjects,setVisible] = useState(false);
+  const [seeSubjects, setVisible] = useState(false);
   const [cg, setCG] = useState(null);
   let [gradeVals, setGrades] = useState(Array(subject).fill(0));
+  let [marks, setMarks] = useState(Array(subject).fill(0));
   let [subjectNames, setSubjectNames] = useState(Array(subject).fill(""));
   let [creditValues, setCredits] = useState(Array(subject).fill(0));
 
@@ -16,9 +17,9 @@ function App() {
     setMode(e.target.value);
     setSubject(1);
   };
-  const handleCheck = ()=>{
+  const handleCheck = () => {
     setVisible(!seeSubjects);
-  }
+  };
   const addSubject = () => {
     if (subject < 15) setSubject(subject + 1);
   };
@@ -37,8 +38,6 @@ function App() {
     let cgpa = obtainedCredits / totalCredits;
     let rounded = cgpa.toFixed(2);
     setCG(rounded);
-    console.log(totalCredits);
-    console.log(subjectNames, gradeVals, creditValues);
   };
   return (
     <>
@@ -81,11 +80,27 @@ function App() {
           </div>
         </div>
         <div className="flex justify-center gap-3 items-center mt-[10px]">
-          <p className="text-white text-center align-middle lg:text-2xl font-bold">Enter Subjects: </p> <input type="checkbox" onClick={handleCheck} className="lg:w-5 lg:h-5 mt-1" />
+          <p className="text-white text-center align-middle lg:text-2xl font-bold">
+            Enter Subjects:{" "}
+          </p>{" "}
+          <input
+            type="checkbox"
+            onClick={handleCheck}
+            className="lg:w-5 lg:h-5 mt-1"
+          />
         </div>
         {mode === "marks" && (
           <div>
-            <Marks count={subject} />
+            <Marks
+              gradeVals={gradeVals}
+              setGrade={setGrades}
+              subjectNames={subjectNames}
+              creditValues={creditValues}
+              setCredit={setCredits}
+              setSubjectNames={setSubjectNames}
+              count={subject}
+              seeSubjects={seeSubjects}
+            />
           </div>
         )}
         {mode === "grades" && (
@@ -128,7 +143,7 @@ function App() {
             </button>
           </div>
         )}
-        {cg && (
+        {cg<=10 && (
           <p className="text-white font-bold text-2xl justify-center items-center text-center my-[30px]">
             Your CGPA is : {cg}
           </p>
