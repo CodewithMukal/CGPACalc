@@ -6,7 +6,8 @@ import { Grades } from "./components/Grades";
 function App() {
   const [mode, setMode] = useState("");
   const [subject, setSubject] = useState(0);
-  const [cg,setCG] = useState(null);
+  const [seeSubjects,setVisible] = useState(false);
+  const [cg, setCG] = useState(null);
   let [gradeVals, setGrades] = useState(Array(subject).fill(0));
   let [subjectNames, setSubjectNames] = useState(Array(subject).fill(""));
   let [creditValues, setCredits] = useState(Array(subject).fill(0));
@@ -15,27 +16,30 @@ function App() {
     setMode(e.target.value);
     setSubject(1);
   };
+  const handleCheck = ()=>{
+    setVisible(!seeSubjects);
+  }
   const addSubject = () => {
     if (subject < 15) setSubject(subject + 1);
   };
   const removeSubject = () => {
     if (subject > 1) setSubject(subject - 1);
   };
-  const handleCalculate = ()=>{
+  const handleCalculate = () => {
     let totalCredits = 0;
     let obtainedCredits = 0;
-    for(let i of creditValues){
-      totalCredits+=Number(i);
+    for (let i of creditValues) {
+      totalCredits += Number(i);
     }
-    for(let i in creditValues){
-      obtainedCredits += creditValues[i]*gradeVals[i];
+    for (let i in creditValues) {
+      obtainedCredits += creditValues[i] * gradeVals[i];
     }
-    let cgpa = obtainedCredits/totalCredits
+    let cgpa = obtainedCredits / totalCredits;
     let rounded = cgpa.toFixed(2);
-    setCG(rounded)
-    console.log(totalCredits)
-    console.log(subjectNames,gradeVals,creditValues)
-  }
+    setCG(rounded);
+    console.log(totalCredits);
+    console.log(subjectNames, gradeVals, creditValues);
+  };
   return (
     <>
       <NavBar />
@@ -58,6 +62,7 @@ function App() {
               <option value="marks">Marks</option>
               <option value="grades">Grades</option>
             </select>
+
             <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
               <svg
                 class="w-4 h-4 text-gray-500"
@@ -75,6 +80,9 @@ function App() {
             </div>
           </div>
         </div>
+        <div className="flex justify-center gap-3 items-center mt-[10px]">
+          <p className="text-white text-center align-middle lg:text-2xl font-bold">Enter Subjects: </p> <input type="checkbox" onClick={handleCheck} className="lg:w-5 lg:h-5 mt-1" />
+        </div>
         {mode === "marks" && (
           <div>
             <Marks count={subject} />
@@ -82,7 +90,16 @@ function App() {
         )}
         {mode === "grades" && (
           <div>
-            <Grades gradeVals={gradeVals} subjectNames={subjectNames} creditValues={creditValues} setGrade={setGrades} setCredit={setCredits} setSubjectNames={setSubjectNames} count={subject} />
+            <Grades
+              gradeVals={gradeVals}
+              subjectNames={subjectNames}
+              creditValues={creditValues}
+              setGrade={setGrades}
+              setCredit={setCredits}
+              setSubjectNames={setSubjectNames}
+              count={subject}
+              seeSubjects={seeSubjects}
+            />
           </div>
         )}
         {mode != "" && (
@@ -101,15 +118,21 @@ function App() {
             </button>
           </div>
         )}
-        {mode!="" &&<div className="flex justify-center items-center text-2xl ">
-          <button onClick={handleCalculate}  className="flex justify-center items-center px-[150px] py-[10px] rounded-[10px] bg-white text-[#14C682] hover:bg-[#14C682] hover:text-white hover:border-2 transition-colors font-bold">
-            Calculate
-          </button>
-        </div>}
-        {cg && 
-        <p className="text-white font-bold text-2xl justify-center items-center text-center my-[30px]">
-          Your CGPA is : {cg}
-        </p>}
+        {mode != "" && (
+          <div className="flex justify-center items-center text-2xl ">
+            <button
+              onClick={handleCalculate}
+              className="flex justify-center items-center px-[150px] py-[10px] max-w-[90%] rounded-[10px] bg-white text-[#14C682] hover:bg-[#14C682] hover:text-white hover:border-2 transition-colors font-bold"
+            >
+              Calculate
+            </button>
+          </div>
+        )}
+        {cg && (
+          <p className="text-white font-bold text-2xl justify-center items-center text-center my-[30px]">
+            Your CGPA is : {cg}
+          </p>
+        )}
       </div>
     </>
   );
